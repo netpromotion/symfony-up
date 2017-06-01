@@ -1,2 +1,1 @@
-# symfony-up
-Symfony Up!
+# Symfony Up!
