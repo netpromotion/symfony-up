@@ -1,0 +1,3 @@
+services:
+  some_service:
+    class: Netpromotion\SymfonyUp\Test\SomeBundle\Service\SomeService
