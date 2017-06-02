@@ -15,7 +15,7 @@ class AppTestCaseTest extends AppTestCase
         return SomeKernel::class;
     }
 
-    public function testContainsContainer()
+    public function testKernelContainsContainer()
     {
         $this->assertInstanceOf(
             ContainerInterface::class,
@@ -24,11 +24,11 @@ class AppTestCaseTest extends AppTestCase
     }
 
     /**
-     * @dataProvider dataContainsServices
+     * @dataProvider dataKernelContainsServices
      * @param string $id
      * @param string $expected
      */
-    public function testContainsServices($id, $expected)
+    public function testKernelContainsServices($id, $expected)
     {
         $this->assertInstanceOf(
             $expected,
@@ -36,7 +36,7 @@ class AppTestCaseTest extends AppTestCase
         );
     }
 
-    public function dataContainsServices()
+    public function dataKernelContainsServices()
     {
         return [
             ['some_service', SomeService::class], // service from bundle
@@ -44,7 +44,7 @@ class AppTestCaseTest extends AppTestCase
         ];
     }
 
-    public function testContainsRoutes()
+    public function testKernelContainsRoutes()
     {
         $client = new Client($this->getKernel());
         $client->request('GET', '/some.url');
