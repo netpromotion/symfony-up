@@ -1,6 +1,6 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\Kernel;
+namespace Netpromotion\SymfonyUp;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;

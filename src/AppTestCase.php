@@ -1,6 +1,6 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\TestCase;
+namespace Netpromotion\SymfonyUp;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
