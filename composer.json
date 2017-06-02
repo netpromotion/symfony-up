@@ -17,15 +17,21 @@
         "php": ">=5.6",
         "symfony/framework-bundle": "^3.2",
         "symfony/config": "^3.2",
+        "symfony/console": "^3.3",
         "symfony/dependency-injection": "^3.2",
         "symfony/http-kernel": "^3.2",
-        "symfony/routing": "^3.2",
-        "symfony/browser-kit": "^3.2"
+        "symfony/routing": "^3.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8",
+        "phpunit/phpunit": "*",
+        "doctrine/common": "*",
+        "symfony/browser-kit": "^3.2",
         "symfony/phpunit-bridge": "^3.2",
         "sensio/framework-extra-bundle": "^3.0"
+    },
+    "conflict": {
+        "phpunit/phpunit": "<4.8 || >=5",
+        "doctrine/common": "<2.7 || >=3"
     },
     "autoload": {
         "psr-4": {
