@@ -10,7 +10,7 @@ Run `composer require netpromotion/symfony-up` and create following files:
 ### `src/Kernel.php`
 
 ```php
-<?php 
+<?php
 
 use Netpromotion\SymfonyUp\AppKernel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
