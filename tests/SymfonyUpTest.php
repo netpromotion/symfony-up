@@ -27,9 +27,9 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
     public function dataViaWorks()
     {
         return [
-            ["viaKernelFactory", [$this, __FUNCTION__]],
-            ["viaKernelClass", __CLASS__],
-            ["viaKernel", new SomeKernel('dev', true)]
+            ['viaKernelFactory', [$this, __FUNCTION__]],
+            ['viaKernelClass', __CLASS__],
+            ['viaKernel', new SomeKernel('dev', true)]
         ];
     }
 

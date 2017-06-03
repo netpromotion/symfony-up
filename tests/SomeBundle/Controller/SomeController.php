@@ -13,6 +13,6 @@ class SomeController extends Controller
      */
     public function someAction()
     {
-        return new Response("Some response");
+        return new Response('Some response');
     }
 }
