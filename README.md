@@ -50,7 +50,7 @@ class TestCase extends AppTestCase
 
 use Netpromotion\SymfonyUp\SymfonyUp;
 
-require_once __DIR__ . '/../vendor/netpromotion/symfony-up/autoload.php';
+require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 
 SymfonyUp::viaKernelClass(Kernel::class)->runWeb();
 ```
@@ -63,7 +63,7 @@ SymfonyUp::viaKernelClass(Kernel::class)->runWeb();
 
 use Netpromotion\SymfonyUp\SymfonyUp;
 
-require_once __DIR__ . '/../vendor/netpromotion/symfony-up/autoload.php';
+require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 
 SymfonyUp::viaKernelClass(Kernel::class)->runConsole();
 ```
