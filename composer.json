@@ -17,7 +17,7 @@
         "php": ">=5.6",
         "symfony/framework-bundle": "^3.2",
         "symfony/config": "^3.2",
-        "symfony/console": "^3.3",
+        "symfony/console": "^3.2",
         "symfony/dependency-injection": "^3.2",
         "symfony/http-kernel": "^3.2",
         "symfony/routing": "^3.2"
