@@ -17,16 +17,16 @@ abstract class AppKernel extends Kernel
      */
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
     {
-        $config = $this->getRootDir() . '/config/config.yml';
-        if (file_exists($config)) {
-            $loader->load($config);
-        } else {
-            throw new \LogicException(sprintf('Create %s or override %s method', $config, __METHOD__));
-        }
-
         $envConfig = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml';
         if (file_exists($envConfig)) {
             $loader->load($envConfig);
+        } else {
+            $config = $this->getRootDir() . '/config/config.yml';
+            if (file_exists($config)) {
+                $loader->load($config);
+            } else {
+                throw new \LogicException(sprintf('Create %s or override %s method', $config, __METHOD__));
+            }
         }
     }
 
@@ -35,14 +35,14 @@ abstract class AppKernel extends Kernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routing = $this->getRootDir() . '/config/routing.yml';
-        if (file_exists($routing)) {
-            $routes->import($routing);
-        }
-
         $envRouting = $this->getRootDir() . '/config/routing_' . $this->getEnvironment() . '.yml';
         if (file_exists($envRouting)) {
             $routes->import($envRouting);
+        } else {
+            $routing = $this->getRootDir() . '/config/routing.yml';
+            if (file_exists($routing)) {
+                $routes->import($routing);
+            }
         }
 
         return $routes;
