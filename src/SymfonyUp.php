@@ -26,7 +26,7 @@ class SymfonyUp
      * @param callable $kernelFactory
      * @return static
      */
-    public static function viaKernelFactory($kernelFactory)
+    public static function createFromKernelFactory($kernelFactory)
     {
         return new static($kernelFactory);
     }
@@ -35,7 +35,7 @@ class SymfonyUp
      * @param string $kernelClass
      * @return static
      */
-    public static function viaKernelClass($kernelClass)
+    public static function createFromKernelClass($kernelClass)
     {
         return new static(function ($environment, $debug) use ($kernelClass) {
             return new $kernelClass($environment, $debug);
@@ -46,7 +46,7 @@ class SymfonyUp
      * @param KernelInterface $kernel
      * @return static
      */
-    public static function viaKernel(KernelInterface $kernel)
+    public static function createFromKernel(KernelInterface $kernel)
     {
         return new static(function () use ($kernel) {
             return $kernel;

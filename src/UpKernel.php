@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-abstract class AppKernel extends Kernel
+abstract class UpKernel extends Kernel
 {
     use MicroKernelTrait;
 

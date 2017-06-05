@@ -1,3 +1,6 @@
+imports:
+  - resource: config.yml
+
 services:
   test_service:
     class: stdClass

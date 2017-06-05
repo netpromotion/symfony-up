@@ -15,21 +15,21 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class SymfonyUpTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider dataViaWorks
+     * @dataProvider dataCreateFromWorks
      * @param string $method
      * @param mixed $input
      */
-    public function testViaWorks($method, $input)
+    public function testCreateFromWorks($method, $input)
     {
         SymfonyUp::{$method}($input);
     }
 
-    public function dataViaWorks()
+    public function dataCreateFromWorks()
     {
         return [
-            ['viaKernelFactory', [$this, __FUNCTION__]],
-            ['viaKernelClass', __CLASS__],
-            ['viaKernel', new SomeKernel('dev', true)]
+            ['createFromKernelFactory', [$this, __FUNCTION__]],
+            ['createFromKernelClass', __CLASS__],
+            ['createFromKernel', new SomeKernel('dev', true)]
         ];
     }
 
@@ -42,7 +42,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
     {
         $factoryCalled = false;
         try {
-            SymfonyUp::viaKernelFactory(function ($a, $b) use ($environment, $debug, &$factoryCalled) {
+            SymfonyUp::createFromKernelFactory(function ($a, $b) use ($environment, $debug, &$factoryCalled) {
                 $this->assertEquals($environment, $a);
                 $this->assertEquals($debug, $b);
 
@@ -74,7 +74,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(NotFoundHttpException::class); // There is no route for /
 
-        SymfonyUp::viaKernelClass(SomeKernel::class)->runWeb($environment, $debug);
+        SymfonyUp::createFromKernelClass(SomeKernel::class)->runWeb($environment, $debug);
     }
 
     public function dataRunWebWorks()
@@ -101,7 +101,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
 
         $output = new BufferedOutput();
 
-        SymfonyUp::viaKernelClass(SomeKernel::class)->runConsole($input, $output, false);
+        SymfonyUp::createFromKernelClass(SomeKernel::class)->runConsole($input, $output, false);
 
         $this->assertStringMatchesFormat(
             '%aEnvironment%w' . $environment . '%aDebug%w' . var_export($debug, true) . '%a',
@@ -128,7 +128,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
     public function testCheckKernelWorks($kernel, $environment, $debug, $expectedException)
     {
         try {
-            SymfonyUp::viaKernel($kernel)->runWeb($environment, $debug);
+            SymfonyUp::createFromKernel($kernel)->runWeb($environment, $debug);
 
             $this->fail('Exception was expected');
         } catch (\Exception $e) {

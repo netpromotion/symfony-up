@@ -2,13 +2,13 @@
 
 namespace Netpromotion\SymfonyUp\Test;
 
-use Netpromotion\SymfonyUp\AppTestCase;
+use Netpromotion\SymfonyUp\UpTestCase;
 use Netpromotion\SymfonyUp\Test\SomeApp\SomeKernel;
 use Netpromotion\SymfonyUp\Test\SomeBundle\Service\SomeService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Client;
 
-class AppTestCaseTest extends AppTestCase
+class UpTestCaseTest extends UpTestCase
 {
     protected static function getKernelClass()
     {

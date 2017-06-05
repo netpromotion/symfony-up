@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AppTestCase extends WebTestCase
+abstract class UpTestCase extends WebTestCase
 {
     protected static function getKernelClass()
     {

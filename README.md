@@ -8,15 +8,32 @@
 
 Run `composer require netpromotion/symfony-up` and create following files:
 
-### `src/Kernel.php`
+### `app/config/parameters.yml`
+
+```yaml
+parameters:
+  secret: some secret
+```
+
+### `app/config/config.yml`
+
+```yaml
+imports:
+  - resource: parameters.yml
+
+framework:
+  secret: "%secret%"
+```
+
+### `app/AppKernel.php`
 
 ```php
 <?php
 
-use Netpromotion\SymfonyUp\AppKernel;
+use Netpromotion\SymfonyUp\UpKernel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 
-class Kernel extends AppKernel
+class AppKernel extends UpKernel
 {
     public function registerBundles()
     {
@@ -27,18 +44,18 @@ class Kernel extends AppKernel
 }
 ```
 
-### `tests/TestCase.php`
+### `tests/AppTestCase.php`
 
 ```php
 <?php
 
-use Netpromotion\SymfonyUp\AppTestCase;
+use Netpromotion\SymfonyUp\UpTestCase;
 
-class TestCase extends AppTestCase
+class AppTestCase extends UpTestCase
 {
     protected static function getKernelClass()
     {
-        return Kernel::class;
+        return AppKernel::class;
     }
 }
 ```
@@ -52,7 +69,7 @@ use Netpromotion\SymfonyUp\SymfonyUp;
 
 require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 
-SymfonyUp::viaKernelClass(Kernel::class)->runWeb();
+SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
 ```
 
 ### `bin/console.php`
@@ -65,5 +82,5 @@ use Netpromotion\SymfonyUp\SymfonyUp;
 
 require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 
-SymfonyUp::viaKernelClass(Kernel::class)->runConsole();
+SymfonyUp::createFromKernelClass(AppKernel::class)->runConsole();
 ```
