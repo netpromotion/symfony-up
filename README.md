@@ -55,7 +55,8 @@ class AppKernel extends UpKernel
     public function registerBundles()
     {
         return [
-            new FrameworkBundle()
+            new FrameworkBundle(),
+            // TODO add more bundles here
         ];
     }
 }
