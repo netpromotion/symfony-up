@@ -74,7 +74,7 @@ require_once __DIR__ . '/../app/AppKernel.php';
 SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
 ```
 
-### `bin/console.php`
+### `bin/console`
 
 ```php
 #!/usr/bin/env php

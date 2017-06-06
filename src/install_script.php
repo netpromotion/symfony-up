@@ -47,6 +47,14 @@ for ($i = 0; $i < $countOfFiles; $i++) {
             ));
             exit(2);
         }
+        if (false === @chmod($filePath, DIRECTORY_SEPARATOR . 'bin' === substr($dirPath, -4) ? 0744 : 0644)) {
+            $io->writeln(PHP_EOL);
+            $io->error(sprintf(
+                'Could not set permissions on file: %s',
+                $filePath
+            ));
+            exit(2);
+        }
     }
     $io->progressAdvance();
     if ($io->isVerbose()) {
