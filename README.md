@@ -78,7 +78,7 @@ class AppTestCase extends UpTestCase
 }
 ```
 
-### `web/index.php`
+### `web/app.php`
 
 ```php
 <?php
@@ -88,6 +88,43 @@ use Netpromotion\SymfonyUp\SymfonyUp;
 require_once __DIR__ . '/../app/autoload.php';
 
 SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
+```
+
+### `web/.htaccess`
+
+```apacheconfig
+DirectoryIndex app.php
+
+# Uncomment the following line if you experience problems related to symlinks
+# Options FollowSymlinks
+
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+    RewriteRule ^(.*) - [E=BASE:%1]
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteRule ^app\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
+
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    RewriteRule ^ %{ENV:BASE}/app.php [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /app.php/
+    </IfModule>
+</IfModule>
 ```
 
 ### `bin/console`
