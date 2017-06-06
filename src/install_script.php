@@ -53,7 +53,7 @@ for ($i = 0; $i < $countOfFiles; $i++) {
                 'Could not set permissions on file: %s',
                 $filePath
             ));
-            exit(2);
+            exit(3);
         }
     }
     $io->progressAdvance();
