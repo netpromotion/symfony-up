@@ -31,10 +31,13 @@ framework:
 ```php
 <?php
 
+/** @var Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 
-require_once __DIR__ . '/../app/AppKernel.php';
-require_once __DIR__ . '/../tests/AppTestCase.php';
+$loader->addClassMap([
+    AppKernel::class => __DIR__ . '/AppKernel.php',
+    AppTestCase::class => __DIR__ . '/../tests/AppTestCase.php',
+]);
 
 return $loader;
 ```
