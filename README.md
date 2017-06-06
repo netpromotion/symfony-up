@@ -26,6 +26,19 @@ framework:
   secret: "%secret%"
 ```
 
+### `app/autoload.php`
+
+```php
+<?php
+
+$loader = require __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
+
+require_once __DIR__ . '/../app/AppKernel.php';
+require_once __DIR__ . '/../tests/AppTestCase.php';
+
+return $loader;
+```
+
 ### `app/AppKernel.php`
 
 ```php
@@ -68,8 +81,7 @@ class AppTestCase extends UpTestCase
 
 use Netpromotion\SymfonyUp\SymfonyUp;
 
-require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
-require_once __DIR__ . '/../app/AppKernel.php';
+require_once __DIR__ . '/../app/autoload.php';
 
 SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
 ```
@@ -82,8 +94,19 @@ SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
 
 use Netpromotion\SymfonyUp\SymfonyUp;
 
-require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
-require_once __DIR__ . '/../app/AppKernel.php';
+require_once __DIR__ . '/../app/autoload.php';
 
 SymfonyUp::createFromKernelClass(AppKernel::class)->runConsole();
+```
+
+### `phpunit.xml`
+
+```xml
+<phpunit bootstrap="./app/autoload.php">
+    <testsuites>
+        <testsuite>
+            <directory suffix="Test.php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
 ```
