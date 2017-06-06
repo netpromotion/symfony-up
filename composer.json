@@ -32,6 +32,7 @@
     "conflict": {
         "doctrine/common": "<2.7 || >=3"
     },
+    "bin": ["bin/symfony-up"],
     "autoload": {
         "psr-4": {
             "Netpromotion\\SymfonyUp\\": "src"

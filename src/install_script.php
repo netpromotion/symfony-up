@@ -1,0 +1,64 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/autoload.php';
+
+$readme = file_get_contents(__DIR__ . '/../README.md');
+$workingDir = getcwd();
+
+$io = new \Symfony\Component\Console\Style\SymfonyStyle(
+        new \Symfony\Component\Console\Input\ArgvInput(),
+        new \Symfony\Component\Console\Output\ConsoleOutput()
+);
+
+$io->comment(sprintf(
+        'Symfony Up! will create necessary files in <info>%s</info>',
+        $workingDir
+));
+if (!$io->askQuestion(new \Symfony\Component\Console\Question\ConfirmationQuestion('Continue with this action?', true))) {
+    exit(0);
+};
+
+preg_match_all('/### `([^`]*)`\s*```[^\s]*\s([^`]*)```/m', $readme, $matches);
+
+$countOfFiles = count($matches[0]);
+
+$io->progressStart($countOfFiles);
+for ($i = 0; $i < $countOfFiles; $i++) {
+    $content = $matches[2][$i];
+    $filePath = $workingDir . DIRECTORY_SEPARATOR . $matches[1][$i];
+    $dirPath = dirname($filePath);
+    if (!is_dir($dirPath)) {
+        if (false === @mkdir($dirPath, 0755, true)) {
+            $io->writeln(PHP_EOL);
+            $io->error(sprintf(
+                'Could not create directory: %s',
+                $dirPath
+            ));
+            exit(1);
+        }
+    }
+    if (!file_exists($filePath)) {
+        if (false === @file_put_contents($filePath, $content)) {
+            $io->writeln(PHP_EOL);
+            $io->error(sprintf(
+                'Could not create file: %s',
+                $filePath
+            ));
+            exit(2);
+        }
+    }
+    $io->progressAdvance();
+    if ($io->isVerbose()) {
+        $io->comment($filePath);
+    }
+}
+
+$io->progressFinish();
+
+$io->success(sprintf(
+        'Files successfully created in directory: %s',
+        $workingDir
+));
+
+exit(0);

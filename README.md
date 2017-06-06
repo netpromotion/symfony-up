@@ -6,7 +6,7 @@
 
 ## Getting started
 
-Run `composer require netpromotion/symfony-up` and create following files:
+Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symfony-up` which creates following files:
 
 ### `app/config/parameters.yml`
 
