@@ -12,7 +12,8 @@ Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symf
 
 ```yaml
 parameters:
-  secret: some secret
+    # A secret key that's used to generate certain security-related tokens
+    secret: ThisTokenIsNotSoSecretChangeIt
 ```
 
 ### `app/config/config.yml`
