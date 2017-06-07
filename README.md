@@ -29,7 +29,7 @@ framework:
 
   # session.save_path is the path where the session files are created
   session:
-    save_path: '%kernel.project_dir%/var/sessions'
+    save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
 
   # http_method_override determines whether the _method request parameter is used as the intended HTTP method on POST requests
   http_method_override: true
