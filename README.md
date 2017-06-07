@@ -24,6 +24,7 @@ imports:
 
 framework:
   secret: "%secret%"
+  http_method_override: true
 ```
 
 ### `app/autoload.php`
@@ -84,10 +85,25 @@ class AppTestCase extends UpTestCase
 <?php
 
 use Netpromotion\SymfonyUp\SymfonyUp;
+use Symfony\Component\HttpFoundation\Request;
 
 require_once __DIR__ . '/../app/autoload.php';
 
+Request::enableHttpMethodParameterOverride(); // remove this line if kernel.http_method_override = false
+
 SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
+```
+
+### `web/app_dev.php`
+
+```php
+<?php
+
+use Netpromotion\SymfonyUp\SymfonyUp;
+
+require_once __DIR__ . '/../app/autoload.php';
+
+SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb('dev', true);
 ```
 
 ### `web/.htaccess`
