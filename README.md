@@ -12,8 +12,8 @@ Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symf
 
 ```yaml
 parameters:
-    # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+  secret: ThisTokenIsNotSoSecretChangeIt
+  assets.version: 1
 ```
 
 ### `app/config/config.yml`
@@ -23,8 +23,36 @@ imports:
   - resource: parameters.yml
 
 framework:
-  secret: "%secret%"
+  # secret is commonly used to add more entropy to security related operations
+  secret: '%secret%'
+  
+  # http_method_override determines whether the _method request parameter is used as the intended HTTP method on POST requests
   http_method_override: true
+  
+  # trusted_hosts are the hosts that application can respond to
+  trusted_hosts: ~
+
+  # assets.version is used to bust the cache on assets
+  # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
+  assets:
+    version: '%assets.version%'
+    version_format: %%s?version=%%s
+
+  # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
+  php_errors:
+    log: true
+```
+
+### `app/config/config_dev.yml`
+
+```yaml
+imports:
+  - resource: config.yml
+
+framework:
+  # profiler.enabled enables profiler for 'dev' environment
+  profiler:
+    enabled: true
 ```
 
 ### `app/autoload.php`
