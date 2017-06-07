@@ -64,7 +64,7 @@ for ($i = 0; $i < $countOfFiles; $i++) {
 
 $dirPath = $workingDir . DIRECTORY_SEPARATOR . 'var';
 if (!is_dir($dirPath)) {
-    if (false === @mkdir($dirPath, 0755, true)) {
+    if (false === @mkdir($dirPath, 0777, true)) {
         $io->writeln(PHP_EOL);
         $io->error(sprintf(
             'Could not create directory: %s',
