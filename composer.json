@@ -1,6 +1,6 @@
 {
     "name": "netpromotion/symfony-up",
-    "description": "Package for rapid simplification of Symfony applications and their development",
+    "description": "Up your Symfony App with Symfony Up!",
     "homepage": "https://github.com/netpromotion/symfony-up",
     "license": "MIT",
     "authors": [
