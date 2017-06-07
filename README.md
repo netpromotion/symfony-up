@@ -106,7 +106,7 @@ class AppKernel extends UpKernel
 
     public function getCacheDir()
     {
-        return $this->getProjectDir() . '/var/cache';
+        return $this->getProjectDir() . '/var/cache/' . $this->getEnvironment();
     }
 
     public function getLogDir()
