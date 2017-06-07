@@ -13,6 +13,7 @@ Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symf
 ```yaml
 parameters:
   secret: ThisTokenIsNotSoSecretChangeIt
+  trusted_hosts: ~
   assets.version: ~
 ```
 
@@ -24,18 +25,18 @@ imports:
 
 framework:
   # secret is commonly used to add more entropy to security related operations
-  secret: '%secret%'
-  
+  secret: %secret%
+
   # http_method_override determines whether the _method request parameter is used as the intended HTTP method on POST requests
   http_method_override: true
-  
+
   # trusted_hosts are the hosts that application can respond to
-  trusted_hosts: ~
+  trusted_hosts: %trusted_hosts%
 
   # assets.version is used to bust the cache on assets
   # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
   assets:
-    version: '%assets.version%'
+    version: %assets.version%
     version_format: %%s?version=%%s
 
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
