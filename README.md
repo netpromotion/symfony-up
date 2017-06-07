@@ -13,7 +13,7 @@ Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symf
 ```yaml
 parameters:
   secret: ThisTokenIsNotSoSecretChangeIt
-  assets.version: 1
+  assets.version: ~
 ```
 
 ### `app/config/config.yml`
