@@ -27,6 +27,14 @@ framework:
   # secret is commonly used to add more entropy to security related operations
   secret: %secret%
 
+  # session.storage_id is service id used for session storage
+  # session.handler_id is service id used for session storage
+  # session.save_path is the path where the session files are created
+  session:
+    storage_id: session.storage.native
+    handler_id: session.handler.native_file
+    save_path: '%kernel.project_dir%/var/sessions'
+
   # http_method_override determines whether the _method request parameter is used as the intended HTTP method on POST requests
   http_method_override: true
 
@@ -88,6 +96,26 @@ class AppKernel extends UpKernel
             new FrameworkBundle(),
             // TODO add more bundles here
         ];
+    }
+
+    public function getProjectDir()
+    {
+        return __DIR__ . '/..';
+    }
+
+    public function getRootDir()
+    {
+        return $this->getProjectDir() . '/app';
+    }
+
+    public function getCacheDir()
+    {
+        return $this->getProjectDir() . '/var/cache';
+    }
+
+    public function getLogDir()
+    {
+        return $this->getProjectDir() . '/var/logs';
     }
 }
 ```
