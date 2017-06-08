@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -61,9 +63,7 @@ class SymfonyUp
      */
     public function runWeb($environment = 'prod', $debug = false)
     {
-        if ($debug) {
-            Debug::enable();
-        }
+        $this->handleErrors($debug);
 
         /** @var KernelInterface $kernel */
         $kernel = call_user_func($this->kernelFactory, $environment, $debug);
@@ -102,9 +102,7 @@ class SymfonyUp
         $environment = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: 'dev');
         $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && $environment !== 'prod';
 
-        if ($debug) {
-            Debug::enable();
-        }
+        $this->handleErrors($debug);
 
         /** @var KernelInterface $kernel */
         $kernel = call_user_func($this->kernelFactory, $environment, $debug);
@@ -137,6 +135,16 @@ class SymfonyUp
                 var_export($kernel->isDebug(), true),
                 var_export($debug, true)
             ), E_USER_WARNING);
+        }
+    }
+
+    private function handleErrors($debug)
+    {
+        if ($debug) {
+            Debug::enable();
+        } else {
+            ErrorHandler::register();
+            ExceptionHandler::register(false);
         }
     }
 }
