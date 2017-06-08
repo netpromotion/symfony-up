@@ -2,4 +2,4 @@ imports:
   - resource: parameters.yml
 
 framework:
-  secret: "%secret%"
+  secret: '%secret%'

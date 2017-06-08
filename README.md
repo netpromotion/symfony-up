@@ -25,7 +25,7 @@ imports:
 
 framework:
   # secret is commonly used to add more entropy to security related operations
-  secret: %secret%
+  secret: '%secret%'
 
   # session.save_path is the path where the session files are created
   session:
@@ -35,13 +35,13 @@ framework:
   http_method_override: true
 
   # trusted_hosts are the hosts that application can respond to
-  trusted_hosts: %trusted_hosts%
+  trusted_hosts: '%trusted_hosts%'
 
   # assets.version is used to bust the cache on assets
   # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
   assets:
-    version: %assets.version%
-    version_format: %%s?version=%%s
+    version: '%assets.version%'
+    version_format: '%%s?version=%%s'
 
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
   php_errors:
