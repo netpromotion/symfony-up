@@ -15,6 +15,17 @@ abstract class UpKernel extends Kernel
     /**
      * @inheritdoc
      */
+    public function getName()
+    {
+        $name = str_replace('\\', '_', get_called_class());
+        $name = preg_replace('/Kernel$/', '', $name);
+
+        return $name;
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
     {
         $envConfig = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml';
