@@ -8,9 +8,22 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class UpTestCase extends WebTestCase
 {
+    /**
+     * @inheritdoc
+     */
     protected static function getKernelClass()
     {
         throw new \LogicException(sprintf('Override %s method', __METHOD__));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        static::$class = null;
+        static::$kernel = null;
     }
 
     /**
@@ -18,10 +31,10 @@ abstract class UpTestCase extends WebTestCase
      */
     protected function getKernel()
     {
-        if (!self::$kernel || !self::$kernel->getContainer()) {
-            self::bootKernel();
+        if (!static::$kernel || !static::$kernel->getContainer()) {
+            static::bootKernel();
         }
-        return self::$kernel;
+        return static::$kernel;
     }
 
     /**
