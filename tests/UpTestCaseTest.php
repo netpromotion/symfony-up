@@ -6,7 +6,7 @@ use Netpromotion\SymfonyUp\UpTestCase;
 use Netpromotion\SymfonyUp\Test\SomeApp\SomeKernel;
 use Netpromotion\SymfonyUp\Test\SomeBundle\Service\SomeService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 class UpTestCaseTest extends UpTestCase
 {
@@ -46,10 +46,8 @@ class UpTestCaseTest extends UpTestCase
 
     public function testKernelContainsRoutes()
     {
-        $client = new Client($this->getKernel());
-        $client->request('GET', '/some.url');
+        $response = $this->getKernel()->handle(Request::create('/some.url', 'GET'));
 
-        $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Some response', $response->getContent());
     }
