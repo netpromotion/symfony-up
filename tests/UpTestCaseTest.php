@@ -39,8 +39,8 @@ class UpTestCaseTest extends UpTestCase
     public function dataKernelContainsServices()
     {
         return [
-            ['some_service', SomeService::class], // service from bundle
-            ['test_service', \stdClass::class], // service from tests
+            'service from bundle' => ['some_service', SomeService::class],
+            'service from test env' => ['test_service', \stdClass::class],
         ];
     }
 

@@ -27,9 +27,9 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
     public function dataCreateFromWorks()
     {
         return [
-            ['createFromKernelFactory', [$this, __FUNCTION__]],
-            ['createFromKernelClass', __CLASS__],
-            ['createFromKernel', new SomeKernel('dev', true)]
+            'kernel factory' => ['createFromKernelFactory', [$this, __FUNCTION__]],
+            'kernel class' => ['createFromKernelClass', __CLASS__],
+            'kernel' => ['createFromKernel', new SomeKernel('dev', true)],
         ];
     }
 
