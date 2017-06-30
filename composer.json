@@ -29,6 +29,9 @@
         "symfony/phpunit-bridge": "^3.2",
         "sensio/framework-extra-bundle": "^3.0"
     },
+    "suggest": {
+        "doctrine/common": "Registers an autoloading for annotations"
+    },
     "conflict": {
         "doctrine/common": "<2.7 || >=3"
     },
