@@ -39,9 +39,9 @@ framework:
 
   # assets.version is used to bust the cache on assets
   # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
-  assets:
-    version: '%assets.version%'
-    version_format: '%%s?version=%%s'
+  #assets: # uncomment this line and lines below if your application requires `symfony/asset`
+  #  version: '%assets.version%'
+  #  version_format: '%%s?version=%%s'
 
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
   php_errors:

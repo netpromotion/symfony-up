@@ -30,7 +30,8 @@
         "sensio/framework-extra-bundle": "^3.0"
     },
     "suggest": {
-        "doctrine/common": "Registers an autoloading for annotations"
+        "doctrine/common": "Registers an autoloading for annotations",
+        "symfony/asset": "Manages URL generation and versioning of web assets (uncomment `framework.assets` part of `app/config/config.yml`)"
     },
     "conflict": {
         "doctrine/common": "<2.7 || >=3"
