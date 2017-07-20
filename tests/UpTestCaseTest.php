@@ -5,7 +5,6 @@ namespace Netpromotion\SymfonyUp\Test;
 use Netpromotion\SymfonyUp\UpTestCase;
 use Netpromotion\SymfonyUp\Test\SomeApp\SomeKernel;
 use Netpromotion\SymfonyUp\Test\SomeBundle\Service\SomeService;
-use Netpromotion\SymfonyUp\OverridingContainer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -51,10 +50,5 @@ class UpTestCaseTest extends UpTestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Some response', $response->getContent());
-    }
-
-    public function testKernelUsesOverridingContainerForTesting()
-    {
-        $this->assertInstanceOf(OverridingContainer::class, $this->getContainer());
     }
 }

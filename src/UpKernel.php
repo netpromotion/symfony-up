@@ -58,16 +58,4 @@ abstract class UpKernel extends Kernel
 
         return $routes;
     }
-
-    /**
-     * @inheritdoc
-     */
-    protected function initializeContainer()
-    {
-        parent::initializeContainer();
-
-        if ('test' === $this->getEnvironment()) {
-            $this->container = new OverridingContainer($this->container);
-        }
-    }
 }
