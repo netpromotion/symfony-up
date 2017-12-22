@@ -200,7 +200,7 @@ SymfonyUp::createFromKernelClass(AppKernel::class)->runConsole();
 ### `phpunit.xml`
 
 ```xml
-<phpunit bootstrap="./app/autoload.php">
+<phpunit bootstrap="./app/autoload.php" colors="true">
     <testsuites>
         <testsuite>
             <directory suffix="Test.php">./tests/</directory>
