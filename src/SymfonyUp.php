@@ -56,6 +56,20 @@ class SymfonyUp
     }
 
     /**
+     * @param string $environment
+     * @param bool $debug
+     * @return KernelInterface
+     */
+    public function createKernel($environment = 'prod', $debug = false)
+    {
+        /** @var KernelInterface $kernel */
+        $kernel = call_user_func($this->kernelFactory, $environment, $debug);
+        $this->checkKernel($kernel, $environment, $debug);
+
+        return $kernel;
+    }
+
+    /**
      * Prepares and runs web application
      *
      * @param string $environment
@@ -65,9 +79,7 @@ class SymfonyUp
     {
         $this->handleErrors($debug);
 
-        /** @var KernelInterface $kernel */
-        $kernel = call_user_func($this->kernelFactory, $environment, $debug);
-        $this->checkKernel($kernel, $environment, $debug);
+        $kernel = $this->createKernel($environment, $debug);
 
         if (!$debug) {
             if (method_exists($kernel, 'loadClassCache')) {
@@ -90,6 +102,7 @@ class SymfonyUp
      * @param OutputInterface|null $output
      * @param bool $autoExit
      * @return int
+     * @throws \Exception
      */
     public function runConsole(InputInterface $input = null, OutputInterface $output = null, $autoExit = true)
     {
@@ -104,9 +117,7 @@ class SymfonyUp
 
         $this->handleErrors($debug);
 
-        /** @var KernelInterface $kernel */
-        $kernel = call_user_func($this->kernelFactory, $environment, $debug);
-        $this->checkKernel($kernel, $environment, $debug);
+        $kernel = $this->createKernel($environment, $debug);
 
         $application = new Application($kernel);
         $application->setAutoExit($autoExit);
