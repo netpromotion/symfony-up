@@ -15,18 +15,18 @@
     ],
     "require": {
         "php": ">=5.6",
-        "symfony/framework-bundle": "^3.2",
-        "symfony/config": "^3.2",
-        "symfony/console": "^3.2",
-        "symfony/dependency-injection": "^3.2",
-        "symfony/http-kernel": "^3.2",
-        "symfony/routing": "^3.2",
-        "symfony/yaml": "^3.2"
+        "symfony/framework-bundle": "^3.4",
+        "symfony/config": "^3.4",
+        "symfony/console": "^3.4",
+        "symfony/dependency-injection": "^3.4",
+        "symfony/http-kernel": "^3.4",
+        "symfony/routing": "^3.4",
+        "symfony/yaml": "^3.4"
     },
     "require-dev": {
         "doctrine/common": "*",
         "phpunit/phpunit": "^4.8",
-        "symfony/phpunit-bridge": "^3.2",
+        "symfony/phpunit-bridge": "^3.4",
         "sensio/framework-extra-bundle": "^3.0"
     },
     "suggest": {

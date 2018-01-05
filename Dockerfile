@@ -14,3 +14,6 @@ RUN cd /tmp && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php'); unlink('composer-setup.php.sig');" && \
     mv composer.phar /usr/local/bin/composer
+
+# Set default timezone
+RUN echo "date.timezone=UTC" >> /usr/local/etc/php/php.ini
