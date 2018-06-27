@@ -36,7 +36,8 @@
         "symfony/dotenv": "Registers environment variables from a .env file"
     },
     "conflict": {
-        "doctrine/common": "<2.7 || >=3"
+        "doctrine/common": "<2.7 || >=3",
+        "symfony/dotenv": "<4.1 || >=5"
     },
     "bin": ["bin/symfony-up"],
     "autoload": {
