@@ -21,6 +21,10 @@ APP_SECRET=ThisTokenIsNotSoSecretChangeIt
 #TRUSTED_PROXIES=127.0.0.1,127.0.0.2
 #TRUSTED_HOSTS=localhost,example.com
 ###< symfony/framework-bundle ###
+
+###> symfony/asset ###
+#ASSETS_VERSION=2018-06-27
+###< symfony/asset ###
 ```
 
 ### `config/config.yaml`
@@ -40,7 +44,7 @@ framework:
   # assets.version is used to bust the cache on assets
   # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
   #assets: # uncomment this line and lines below if your application requires symfony/asset
-  #  version: '%assets.version%'
+  #  version: '%env(ASSETS_VERSION)%'
   #  version_format: '%%s?version=%%s'
 
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
