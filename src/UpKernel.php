@@ -70,6 +70,6 @@ abstract class UpKernel extends Kernel
         $routes->import($this->getConfigurationDir() . '/{routes}/*' . self::CONFIG_EXTS, '/', 'glob');
         $routes->import($this->getConfigurationDir() . '/{routes}/' . $this->environment . '/*' . self::CONFIG_EXTS, '/', 'glob');
         $routes->import($this->getConfigurationDir() . '/{routes}' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($this->getConfigurationDir() . '/{routes}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+        $routes->import($this->getConfigurationDir() . '/{routes}_' . $this->environment . self::CONFIG_EXTS, '/', 'glob');
     }
 }
