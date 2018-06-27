@@ -2,19 +2,16 @@
 
 namespace Netpromotion\SymfonyUp\Test;
 
-use Netpromotion\SymfonyUp\AppKernelTrait;
+use Netpromotion\SymfonyUp\UpKernelTrait;
 
 class AppKernelTraitMock
 {
-    use AppKernelTrait;
+    use UpKernelTrait;
+
+    protected $environment = 'env';
 
     public function getProjectDir()
     {
         return '/tmp';
-    }
-
-    public function getEnvironment()
-    {
-        return 'env';
     }
 }

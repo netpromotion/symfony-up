@@ -26,10 +26,7 @@ abstract class UpTestCase extends WebTestCase
         static::$kernel = null;
     }
 
-    /**
-     * @return KernelInterface
-     */
-    protected function getKernel()
+    protected function getKernel(): KernelInterface
     {
         if (!static::$kernel || !static::$kernel->getContainer()) {
             static::bootKernel();
@@ -37,10 +34,7 @@ abstract class UpTestCase extends WebTestCase
         return static::$kernel;
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->getKernel()->getContainer();
     }

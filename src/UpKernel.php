@@ -3,7 +3,9 @@
 namespace Netpromotion\SymfonyUp;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Exception\FileLoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -11,6 +13,8 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 abstract class UpKernel extends Kernel
 {
     use MicroKernelTrait;
+
+    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     /**
      * @inheritdoc
@@ -23,39 +27,48 @@ abstract class UpKernel extends Kernel
         return $name;
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
+    public function registerBundles()
     {
-        $envConfig = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml';
-        if (file_exists($envConfig)) {
-            $loader->load($envConfig);
-        } else {
-            $config = $this->getRootDir() . '/config/config.yml';
-            if (file_exists($config)) {
-                $loader->load($config);
-            } else {
-                throw new \LogicException(sprintf('Create %s or override %s method', $config, __METHOD__));
+        /** @noinspection PhpIncludeInspection */
+        $bundles = require $this->getProjectDir() . '/config/bundles.php';
+        foreach ($bundles as $class => $environments) {
+            if (isset($environments['all']) || isset($environments[$this->environment])) {
+                yield new $class();
             }
         }
     }
 
+    private function getConfigurationDir()
+    {
+        return $this->getProjectDir().'/config';
+    }
+
     /**
-     * @inheritdoc
+     * @param ContainerBuilder $container
+     * @param LoaderInterface $loader
+     * @throws \Exception
+     */
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    {
+        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
+        $container->setParameter('container.dumper.inline_class_loader', true);
+
+        $loader->load($this->getConfigurationDir() . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($this->getConfigurationDir() . '/{packages}/' . $this->environment . '/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($this->getConfigurationDir() . '/{config}' . self::CONFIG_EXTS, 'glob');
+        $loader->load($this->getConfigurationDir() . '/{config}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+        $loader->load($this->getConfigurationDir() . '/{services}' . self::CONFIG_EXTS, 'glob');
+        $loader->load($this->getConfigurationDir() . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+    }
+
+    /**
+     * @param RouteCollectionBuilder $routes
+     * @throws FileLoaderLoadException
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $envRouting = $this->getRootDir() . '/config/routing_' . $this->getEnvironment() . '.yml';
-        if (file_exists($envRouting)) {
-            $routes->import($envRouting);
-        } else {
-            $routing = $this->getRootDir() . '/config/routing.yml';
-            if (file_exists($routing)) {
-                $routes->import($routing);
-            }
-        }
-
-        return $routes;
+        $routes->import($this->getConfigurationDir() . '/{routes}/*' . self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($this->getConfigurationDir() . '/{routes}/' . $this->environment . '/*' . self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($this->getConfigurationDir() . '/{routes}' . self::CONFIG_EXTS, '/', 'glob');
     }
 }

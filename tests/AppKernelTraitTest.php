@@ -2,7 +2,7 @@
 
 namespace Netpromotion\SymfonyUp\Test;
 
-class AppKernelTraitTest extends \PHPUnit_Framework_TestCase
+class AppKernelTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testReturnsCorrectRootDir()
     {
@@ -16,6 +16,6 @@ class AppKernelTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsCorrectLogDir()
     {
-        $this->assertSame('/tmp/var/logs', (new AppKernelTraitMock())->getLogDir());
+        $this->assertSame('/tmp/var/log', (new AppKernelTraitMock())->getLogDir());
     }
 }

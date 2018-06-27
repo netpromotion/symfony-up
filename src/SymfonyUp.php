@@ -2,6 +2,7 @@
 
 namespace Netpromotion\SymfonyUp;
 
+use Netpromotion\SymfonyUp\Exception\MismatchException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,11 +10,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class SymfonyUp
 {
+    const ENVIRONMENT = 'APP_ENV';
+    const DEBUG = 'APP_DEBUG';
+
     /**
      * @var callable
      */
@@ -24,104 +29,96 @@ class SymfonyUp
         $this->kernelFactory = $kernelFactory;
     }
 
-    /**
-     * @param callable $kernelFactory
-     * @return static
-     */
-    public static function createFromKernelFactory($kernelFactory)
+    public static function createFromKernelFactory(callable $kernelFactory): SymfonyUp
     {
         return new static($kernelFactory);
     }
 
-    /**
-     * @param string $kernelClass
-     * @return static
-     */
-    public static function createFromKernelClass($kernelClass)
+    public static function createFromKernelClass(string $kernelClass): SymfonyUp
     {
         return new static(function ($environment, $debug) use ($kernelClass) {
             return new $kernelClass($environment, $debug);
         });
     }
 
-    /**
-     * @param KernelInterface $kernel
-     * @return static
-     */
-    public static function createFromKernel(KernelInterface $kernel)
+    public static function createFromKernel(KernelInterface $kernel): SymfonyUp
     {
         return new static(function () use ($kernel) {
             return $kernel;
         });
     }
 
-    /**
-     * @param string $environment
-     * @param bool $debug
-     * @return KernelInterface
-     */
-    public function createKernel($environment = 'prod', $debug = false)
+    public function createKernel(string $environment = 'prod', bool $debug = false): KernelInterface
     {
         /** @var KernelInterface $kernel */
         $kernel = call_user_func($this->kernelFactory, $environment, $debug);
+
+        /** @noinspection PhpUnhandledExceptionInspection */
         $this->checkKernel($kernel, $environment, $debug);
 
         return $kernel;
     }
 
-    /**
-     * Prepares and runs web application
-     *
-     * @param string $environment
-     * @param bool $debug
-     */
-    public function runWeb($environment = 'prod', $debug = false)
+    public function loadEnvironmentIfNeeded(string $pathToEnvFile): SymfonyUp
     {
+        if (!isset($_SERVER[static::ENVIRONMENT])) {
+            if (!class_exists(Dotenv::class)) {
+                throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
+            }
+            (new Dotenv())->load($pathToEnvFile);
+        }
+
+        return $this;
+    }
+
+    public function runWeb()
+    {
+        $environment = $_SERVER[static::ENVIRONMENT] ?? 'dev';
+        $debug = (bool) ($_SERVER[static::DEBUG] ?? ('prod' !== $environment));
+
         $this->handleErrors($debug);
 
+        if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {
+            Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+        }
+
+        if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
+            Request::setTrustedHosts(explode(',', $trustedHosts));
+        }
+
+        /** @noinspection PhpUnhandledExceptionInspection */
         $kernel = $this->createKernel($environment, $debug);
 
         if (!$debug) {
-            if (method_exists($kernel, 'loadClassCache')) {
-                $kernel->loadClassCache();
-            }
-
             $kernel = new HttpCache($kernel);
         }
 
         $request = Request::createFromGlobals();
+        /** @noinspection PhpUnhandledExceptionInspection */
         $response = $kernel->handle($request);
         $response->send();
         $kernel->terminate($request, $response);
     }
 
-    /**
-     * Prepares and runs console application
-     *
-     * @param InputInterface|null $input
-     * @param OutputInterface|null $output
-     * @param bool $autoExit
-     * @return int
-     * @throws \Exception
-     */
-    public function runConsole(InputInterface $input = null, OutputInterface $output = null, $autoExit = true)
+    public function runConsole(InputInterface $input = null, OutputInterface $output = null, $autoExit = true): int
     {
         set_time_limit(0);
 
         if (null === $input) {
             $input = new ArgvInput();
         }
-
-        $environment = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: 'dev');
-        $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && $environment !== 'prod';
+        $environment = $input->getParameterOption(['--env', '-e'], $_SERVER[static::ENVIRONMENT] ?? 'dev', true);
+        $debug = (bool) ($_SERVER[static::DEBUG] ?? ('prod' !== $environment)) && !$input->hasParameterOption('--no-debug', true);
 
         $this->handleErrors($debug);
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         $kernel = $this->createKernel($environment, $debug);
 
         $application = new Application($kernel);
         $application->setAutoExit($autoExit);
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         return $application->run($input, $output);
     }
 
@@ -129,29 +126,24 @@ class SymfonyUp
      * @param KernelInterface $kernel
      * @param string $environment
      * @param bool $debug
+     * @throws MismatchException
      */
-    private function checkKernel(KernelInterface $kernel, $environment, $debug)
+    private function checkKernel(KernelInterface $kernel, string $environment, bool $debug)
     {
-        if ($kernel->getEnvironment() !== $environment) {
-            user_error(sprintf(
-                'The environment is "%s", expected "%s"',
-                $kernel->getEnvironment(),
-                $environment
-            ), E_USER_ERROR);
+        if ($environment !== $kernel->getEnvironment()) {
+            throw new MismatchException('environment', $environment, $kernel->getEnvironment());
         }
 
-        if ($kernel->isDebug() !== $debug) {
-            user_error(sprintf(
-                'The debug is %s, expected %s',
-                var_export($kernel->isDebug(), true),
-                var_export($debug, true)
-            ), E_USER_WARNING);
+        if ($debug !== $kernel->isDebug()) {
+            throw new MismatchException('debug', $debug, $kernel->isDebug());
         }
     }
 
-    private function handleErrors($debug)
+    private function handleErrors(bool $debug)
     {
         if ($debug) {
+            umask(0000);
+
             Debug::enable();
         } else {
             ErrorHandler::register();

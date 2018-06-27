@@ -6,13 +6,14 @@ use Netpromotion\SymfonyUp\SymfonyUp;
 use Netpromotion\SymfonyUp\Test\SomeApp\SomeKernel;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @runTestsInSeparateProcesses otherwise the error handler will be changed
  */
-class SymfonyUpTest extends \PHPUnit_Framework_TestCase
+class SymfonyUpTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider dataCreateFromWorks
@@ -21,7 +22,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFromWorks($method, $input)
     {
-        SymfonyUp::{$method}($input);
+        $this->assertInstanceOf(SymfonyUp::class, SymfonyUp::{$method}($input));
     }
 
     public function dataCreateFromWorks()
@@ -37,11 +38,15 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
      * @dataProvider dataKernelFactoryGetsEnvironmentAndDebug
      * @param string $environment
      * @param bool $debug
+     * @throws \Exception
      */
     public function testKernelFactoryGetsEnvironmentAndDebug($environment, $debug)
     {
         $factoryCalled = false;
         try {
+            $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
+            $_SERVER[SymfonyUp::DEBUG] = $debug;
+
             SymfonyUp::createFromKernelFactory(function ($a, $b) use ($environment, $debug, &$factoryCalled) {
                 $this->assertEquals($environment, $a);
                 $this->assertEquals($debug, $b);
@@ -49,7 +54,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
                 $factoryCalled = true;
 
                 return new SomeKernel($environment, $debug);
-            })->runWeb($environment, $debug);
+            })->runWeb();
         } catch (NotFoundHttpException $ignored) {
             // There is no route for /
         }
@@ -66,15 +71,51 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider dataLoadsEnvironmentIfNeeded
+     * @param string|null $preset
+     * @param string $expected
+     */
+    public function testLoadsEnvironmentIfNeeded($preset, $expected)
+    {
+        if ($preset) {
+            $_SERVER[SymfonyUp::ENVIRONMENT] = 'test';
+            $_SERVER['TEST_VAR'] = $preset;
+        }
+
+        SymfonyUp::createFromKernel(new SomeKernel('test', true))
+            ->loadEnvironmentIfNeeded(__DIR__ . '/.env');
+
+        $this->assertSame($expected, $_SERVER['TEST_VAR']);
+    }
+
+    public function dataLoadsEnvironmentIfNeeded()
+    {
+        return [
+            [null, 'From .env file'],
+            ['From $_SERVER', 'From $_SERVER'],
+        ];
+    }
+
+    /**
      * @dataProvider dataRunWebWorks
      * @param string $environment
      * @param bool $debug
+     * @throws \Exception
      */
     public function testRunWebWorks($environment, $debug)
     {
-        $this->setExpectedException(NotFoundHttpException::class); // There is no route for /
+        if (!$debug) {
+            $this->expectException(NotFoundHttpException::class); // There is no route for /
+        }
 
-        SymfonyUp::createFromKernelClass(SomeKernel::class)->runWeb($environment, $debug);
+        $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
+        $_SERVER[SymfonyUp::DEBUG] = $debug;
+
+        SymfonyUp::createFromKernelClass(SomeKernel::class)->runWeb();
+
+        if ($debug) {
+            $this->assertSame(Response::HTTP_NOT_FOUND, http_response_code()); // There is no route for /
+        }
     }
 
     public function dataRunWebWorks()
@@ -90,6 +131,7 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
      * @dataProvider dataRunConsoleWorks
      * @param string $environment
      * @param bool $debug
+     * @throws \Exception
      */
     public function testRunConsoleWorks($environment, $debug)
     {
@@ -123,26 +165,38 @@ class SymfonyUpTest extends \PHPUnit_Framework_TestCase
      * @param KernelInterface $kernel
      * @param string $environment
      * @param bool $debug
-     * @param string $expectedException
+     * @param string|int $expectedExceptionOrStatusCode
+     * @throws \Exception
      */
-    public function testCheckKernelWorks($kernel, $environment, $debug, $expectedException)
+    public function testCheckKernelWorks($kernel, $environment, $debug, $expectedExceptionOrStatusCode)
     {
         try {
-            SymfonyUp::createFromKernel($kernel)->runWeb($environment, $debug);
+            $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
+            $_SERVER[SymfonyUp::DEBUG] = $debug;
 
-            $this->fail('Exception was expected');
+            SymfonyUp::createFromKernel($kernel)->runWeb();
+
+            if (is_int($expectedExceptionOrStatusCode)) {
+                $this->assertSame($expectedExceptionOrStatusCode, http_response_code());
+            } else {
+                $this->fail('Exception was expected');
+            }
         } catch (\Exception $e) {
-            $this->assertContains($expectedException, $e->getMessage());
+            if (is_int($expectedExceptionOrStatusCode)) {
+                throw $e;
+            } else {
+                $this->assertContains($expectedExceptionOrStatusCode, $e->getMessage());
+            }
         }
     }
 
     public function dataCheckKernelWorks()
     {
         return [
-            [new SomeKernel('dev', true), 'dev', true, 'No route found for "GET /"'],
+            [new SomeKernel('dev', true), 'dev', true, Response::HTTP_NOT_FOUND],
             [new SomeKernel('dev', true), 'dev', false, 'The debug is true, expected false'],
-            [new SomeKernel('dev', true), 'prod', true, 'The environment is "dev", expected "prod"'],
-            [new SomeKernel('dev', true), 'prod', false, 'The environment is "dev", expected "prod"'],
+            [new SomeKernel('dev', true), 'prod', true, 'The environment is ' . var_export("dev", true) . ', expected ' . var_export("prod", true) . ''],
+            [new SomeKernel('dev', true), 'prod', false, 'The environment is ' . var_export("dev", true) . ', expected ' . var_export("prod", true) . ''],
         ];
     }
 }

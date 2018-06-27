@@ -8,24 +8,27 @@
 
 Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symfony-up` which creates following files:
 
-### `app/config/parameters.yml`
+### `.env.dist`
 
-```yaml
-parameters:
-  secret: ThisTokenIsNotSoSecretChangeIt
-  trusted_hosts: ~
-  assets.version: ~
+```ini
+# This file is a "template" of which env vars need to be defined for your application
+# Copy this file to .env file for development, create environment variables when deploying to production
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+
+###> symfony/framework-bundle ###
+APP_ENV=dev
+APP_SECRET=ThisTokenIsNotSoSecretChangeIt
+#TRUSTED_PROXIES=127.0.0.1,127.0.0.2
+#TRUSTED_HOSTS=localhost,example.com
+###< symfony/framework-bundle ###
 ```
 
-### `app/config/config.yml`
+### `config/config.yaml`
 
 ```yaml
-imports:
-  - resource: parameters.yml
-
 framework:
   # secret is commonly used to add more entropy to security related operations
-  secret: '%secret%'
+  secret: '%env(APP_SECRET)%'
 
   # session.save_path is the path where the session files are created
   session:
@@ -33,9 +36,6 @@ framework:
 
   # http_method_override determines whether the _method request parameter is used as the intended HTTP method on POST requests
   http_method_override: true
-
-  # trusted_hosts are the hosts that application can respond to
-  trusted_hosts: '%trusted_hosts%'
 
   # assets.version is used to bust the cache on assets
   # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
@@ -48,54 +48,49 @@ framework:
     log: true
 ```
 
-### `app/config/config_dev.yml`
+### `config/config_dev.yaml`
 
 ```yaml
-imports:
-  - resource: config.yml
-
 framework:
   # profiler.enabled enables profiler for 'dev' environment
   profiler:
     enabled: true
 ```
 
-### `app/autoload.php`
+### `config/bundles.php`
 
 ```php
 <?php
 
-/** @var Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
-
-$loader->addClassMap([
-    AppKernel::class => __DIR__ . '/AppKernel.php',
-    AppTestCase::class => __DIR__ . '/../tests/AppTestCase.php',
-]);
-
-return $loader;
-```
-
-### `app/AppKernel.php`
-
-```php
-<?php
-
-use Netpromotion\SymfonyUp\AppKernelTrait;
-use Netpromotion\SymfonyUp\UpKernel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 
-class AppKernel extends UpKernel
-{
-    use AppKernelTrait;
+return [
+    FrameworkBundle::class => ['all' => true],
+    // TODO add more bundles here
+];
+```
 
-    public function registerBundles()
-    {
-        return [
-            new FrameworkBundle(),
-            // TODO add more bundles here
-        ];
-    }
+### `config/routes.yaml`
+
+```yaml
+#index:
+#  path: /
+#  controller: App\Controller\DefaultController::index
+```
+
+### `src/Kernel.php`
+
+```php
+<?php
+
+namespace App; // TODO use better namespace
+
+use Netpromotion\SymfonyUp\UpKernelTrait;
+use Netpromotion\SymfonyUp\UpKernel;
+
+class Kernel extends UpKernel
+{
+    use UpKernelTrait;
 
     public function getProjectDir()
     {
@@ -104,53 +99,47 @@ class AppKernel extends UpKernel
 }
 ```
 
-### `tests/AppTestCase.php`
+### `tests/TestCase.php`
 
 ```php
 <?php
 
+namespace App\Test; // TODO use better namespace
+
+use App\Kernel;
 use Netpromotion\SymfonyUp\UpTestCase;
 
-class AppTestCase extends UpTestCase
+class TestCase extends UpTestCase
 {
     protected static function getKernelClass()
     {
-        return AppKernel::class;
+        return Kernel::class;
     }
 }
 ```
 
-### `web/app.php`
+### `public/index.php`
 
 ```php
 <?php
 
+use App\Kernel;
 use Netpromotion\SymfonyUp\SymfonyUp;
 use Symfony\Component\HttpFoundation\Request;
 
-require_once __DIR__ . '/../app/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 Request::enableHttpMethodParameterOverride(); // remove this line if kernel.http_method_override = false
 
-SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb();
+SymfonyUp::createFromKernelClass(Kernel::class)
+    ->loadEnvironmentIfNeeded(__DIR__ . '/../.env')
+    ->runWeb();
 ```
 
-### `web/app_dev.php`
-
-```php
-<?php
-
-use Netpromotion\SymfonyUp\SymfonyUp;
-
-require_once __DIR__ . '/../app/autoload.php';
-
-SymfonyUp::createFromKernelClass(AppKernel::class)->runWeb('dev', true);
-```
-
-### `web/.htaccess`
+### `public/.htaccess`
 
 ```apacheconfig
-DirectoryIndex app.php
+DirectoryIndex index.php
 
 # Uncomment the following line if you experience problems related to symlinks
 # Options FollowSymlinks
@@ -169,17 +158,17 @@ DirectoryIndex app.php
     RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     RewriteCond %{ENV:REDIRECT_STATUS} ^$
-    RewriteRule ^app\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
+    RewriteRule ^index\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
 
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    RewriteRule ^ %{ENV:BASE}/app.php [L]
+    RewriteRule ^ %{ENV:BASE}/index.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
     <IfModule mod_alias.c>
-        RedirectMatch 302 ^/$ /app.php/
+        RedirectMatch 302 ^/$ /index.php/
     </IfModule>
 </IfModule>
 ```
@@ -190,11 +179,14 @@ DirectoryIndex app.php
 #!/usr/bin/env php
 <?php
 
+use App\Kernel;
 use Netpromotion\SymfonyUp\SymfonyUp;
 
-require_once __DIR__ . '/../app/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-SymfonyUp::createFromKernelClass(AppKernel::class)->runConsole();
+SymfonyUp::createFromKernelClass(Kernel::class)
+    ->loadEnvironmentIfNeeded(__DIR__ . '/../.env')
+    ->runConsole();
 ```
 
 ### `phpunit.xml`
