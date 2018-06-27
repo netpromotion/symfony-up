@@ -16,14 +16,14 @@ Run `composer require netpromotion/symfony-up` and optionally `./vendor/bin/symf
 # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 
 ###> symfony/framework-bundle ###
-APP_ENV=dev
-APP_SECRET=ThisTokenIsNotSoSecretChangeIt
-#TRUSTED_PROXIES=127.0.0.1,127.0.0.2
-#TRUSTED_HOSTS=localhost,example.com
+APP_ENV='dev'
+APP_SECRET='ThisIsNotSoSecretChangeIt'
+#TRUSTED_PROXIES='127.0.0.1,127.0.0.2'
+#TRUSTED_HOSTS='localhost,example.com'
 ###< symfony/framework-bundle ###
 
 ###> symfony/asset ###
-#ASSETS_VERSION=2018-06-27
+#ASSETS_VERSION='2018-06-27'
 ###< symfony/asset ###
 ```
 
@@ -87,7 +87,7 @@ return [
 ```php
 <?php
 
-namespace App; // TODO use better namespace
+namespace App;
 
 use Netpromotion\SymfonyUp\UpKernelTrait;
 use Netpromotion\SymfonyUp\UpKernel;
@@ -108,7 +108,7 @@ class Kernel extends UpKernel
 ```php
 <?php
 
-namespace App\Test; // TODO use better namespace
+namespace App\Test;
 
 use App\Kernel;
 use Netpromotion\SymfonyUp\UpTestCase;
@@ -136,7 +136,7 @@ require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 Request::enableHttpMethodParameterOverride(); // remove this line if kernel.http_method_override = false
 
 SymfonyUp::createFromKernelClass(Kernel::class)
-    ->loadEnvironmentIfNeeded(__DIR__ . '/../.env')
+    ->loadEnvironmentIfNeeded(__DIR__ . '/../.env') // remove this line if you are using parameters instead of dotenv
     ->runWeb();
 ```
 
@@ -189,7 +189,7 @@ use Netpromotion\SymfonyUp\SymfonyUp;
 require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
 
 SymfonyUp::createFromKernelClass(Kernel::class)
-    ->loadEnvironmentIfNeeded(__DIR__ . '/../.env')
+    ->loadEnvironmentIfNeeded(__DIR__ . '/../.env') // remove this line if you are using parameters instead of dotenv
     ->runConsole();
 ```
 
