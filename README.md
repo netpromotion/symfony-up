@@ -28,6 +28,7 @@ APP_SECRET='ThisIsNotSoSecretChangeIt'
 ```yaml
 parameters:
   #assets.version: ~ # uncomment this line if your application requires symfony/asset
+  #locale: 'en' # uncomment this line if your application requires symfony/translation
 
 framework:
   # secret is commonly used to add more entropy to security related operations
@@ -45,6 +46,10 @@ framework:
   #assets: # uncomment this line and lines below if your application requires symfony/asset
   #  version: '%assets.version%'
   #  version_format: '%%s?version=%%s'
+
+  # translator.fallbacks is used when the translation key for the current locale wasn't found
+  #translator: # uncomment this line and lines below if your application requires symfony/translation
+  #  fallbacks: '%locale%'
 
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
   php_errors:
