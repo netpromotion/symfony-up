@@ -30,7 +30,7 @@ APP_SECRET='ThisIsNotSoSecretChangeIt'
 ### `config/config.yaml`
 
 ```yaml
-framework:
+framework: # https://symfony.com/doc/current/reference/configuration/framework.html
   # secret is commonly used to add more entropy to security related operations
   secret: '%env(APP_SECRET)%'
 
