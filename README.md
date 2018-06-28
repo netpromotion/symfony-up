@@ -27,12 +27,15 @@ APP_SECRET='ThisIsNotSoSecretChangeIt'
 
 ```yaml
 parameters:
-  #assets.version: ~ # uncomment this line if your application requires symfony/asset
   #locale: 'en' # uncomment this line if your application requires symfony/translation
+  #assets.version: ~ # uncomment this line if your application requires symfony/asset
 
 framework:
   # secret is commonly used to add more entropy to security related operations
   secret: '%env(APP_SECRET)%'
+
+  # default_locale is used if no _locale routing parameter has been set
+  #default_locale: '%locale%' # uncomment this line if your application requires symfony/translation
 
   # session.save_path is the path where the session files are created
   session:
@@ -47,9 +50,13 @@ framework:
   #  version: '%assets.version%'
   #  version_format: '%%s?version=%%s'
 
+  # translator.paths is an array of paths where the component will look for translation files
   # translator.fallbacks is used when the translation key for the current locale wasn't found
   #translator: # uncomment this line and lines below if your application requires symfony/translation
-  #  fallbacks: '%locale%'
+  #  paths:
+  #    - '%kernel.project_dir%/translations'
+  #  fallbacks:
+  #    - '%locale%'
 
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
   php_errors:
