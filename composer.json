@@ -29,7 +29,6 @@
         "symfony/phpunit-bridge": "^4.1"
     },
     "suggest": {
-        "symfony/debug-bundle": "Allows greater integration of the VarDumper component",
         "symfony/dotenv": "Registers environment variables from a .env file",
         "symfony/stopwatch": "Provides a way to profile code",
         "symfony/web-profiler-bundle": "Provides detailed technical information about each request execution and displays it in both the web debug toolbar and the profiler"
