@@ -29,7 +29,6 @@
         "symfony/phpunit-bridge": "^4.1"
     },
     "suggest": {
-        "symfony/asset": "Manages URL generation and versioning of web assets (uncomment `framework.assets` part of `app/config/config.yml`)",
         "symfony/dotenv": "Registers environment variables from a .env file"
     },
     "conflict": {

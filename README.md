@@ -21,44 +21,25 @@ APP_SECRET='ThisIsNotSoSecretChangeIt'
 #TRUSTED_PROXIES='127.0.0.1,127.0.0.2'
 #TRUSTED_HOSTS='localhost,example.com'
 ###< symfony/framework-bundle ###
-
-###> symfony/asset ###
-#ASSETS_VERSION='2018-06-27'
-###< symfony/asset ###
 ```
 
-### `config/config.yaml`
+### `config/packages/framework.yaml`
 
 ```yaml
-framework: # https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
   # secret is commonly used to add more entropy to security related operations
   secret: '%env(APP_SECRET)%'
 
   # session.save_path is the path where the session files are created
   session:
-    save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    save_path: '%kernel.project_dir%/var/session/%kernel.environment%'
 
   # http_method_override determines whether the _method request parameter is used as the intended HTTP method on POST requests
   http_method_override: true
 
-  # assets.version is used to bust the cache on assets
-  # assets.version_format specifies a sprintf pattern that will be used with the version option to construct an asset's path
-  #assets: # uncomment this line and lines below if your application requires symfony/asset
-  #  version: '%env(ASSETS_VERSION)%'
-  #  version_format: '%%s?version=%%s'
-
   # php_errors.log determines whether application logger is used instead of the PHP logger for logging PHP errors
   php_errors:
     log: true
-```
-
-### `config/config_dev.yaml`
-
-```yaml
-framework:
-  # profiler.enabled enables profiler for 'dev' environment
-  profiler:
-    enabled: true
 ```
 
 ### `config/bundles.php`
@@ -74,12 +55,33 @@ return [
 ];
 ```
 
-### `config/routes.yaml`
+### `config/routes/annotations.yaml`
 
 ```yaml
-#index:
-#  path: /
-#  controller: App\Controller\DefaultController::index
+#controllers:
+#  resource: ../../src/Controller/
+#  type: annotation
+```
+
+### `config/services.yaml`
+
+```yaml
+services:
+  # _defaults.autowire determines whether it automatically injects dependencies in your services
+  # _defaults.autoconfigure determines whether it automatically registers your services as commands, event subscribers, etc.
+  # _defaults.public determines whether it allows optimizing the container by removing unused services
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  App\:
+      resource: '../src/*'
+      exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+
+  App\Controller\:
+      resource: '../src/Controller'
+      tags: ['controller.service_arguments']
 ```
 
 ### `src/Kernel.php`
@@ -202,5 +204,8 @@ SymfonyUp::createFromKernelClass(Kernel::class)
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="FOO" value="bar" />
+    </php>
 </phpunit>
 ```

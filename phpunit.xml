@@ -10,4 +10,7 @@
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+    <php>
+        <env name="TEST_VAR_XML" value="From phpunit.xml file" />
+    </php>
 </phpunit>

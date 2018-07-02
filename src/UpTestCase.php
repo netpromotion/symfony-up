@@ -24,18 +24,27 @@ abstract class UpTestCase extends WebTestCase
         parent::setUpBeforeClass();
         static::$class = null;
         static::$kernel = null;
+        static::$container = null;
     }
 
     protected function getKernel(): KernelInterface
     {
-        if (!static::$kernel || !static::$kernel->getContainer()) {
-            static::bootKernel();
-        }
+        $this->bootKernelIfNeeded();
+
         return static::$kernel;
     }
 
     protected function getContainer(): ContainerInterface
     {
-        return $this->getKernel()->getContainer();
+        $this->bootKernelIfNeeded();
+
+        return static::$container;
+    }
+
+    private function bootKernelIfNeeded()
+    {
+        if (!static::$kernel || !static::$container) {
+            static::bootKernel();
+        }
     }
 }
