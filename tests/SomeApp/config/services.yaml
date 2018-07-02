@@ -1,1 +1,5 @@
+parameters:
+  env(TEST_VAR_XML): ''
+  TEST_VAR_XML: '%env(TEST_VAR_XML)%'
+
 services:
