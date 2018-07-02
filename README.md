@@ -131,7 +131,7 @@ use App\Kernel;
 use Netpromotion\SymfonyUp\SymfonyUp;
 use Symfony\Component\HttpFoundation\Request;
 
-require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 Request::enableHttpMethodParameterOverride(); // remove this line if kernel.http_method_override = false
 
@@ -186,7 +186,7 @@ DirectoryIndex index.php
 use App\Kernel;
 use Netpromotion\SymfonyUp\SymfonyUp;
 
-require_once __DIR__ . '/../vendor/netpromotion/symfony-up/src/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 SymfonyUp::createFromKernelClass(Kernel::class)
     ->loadEnvironmentIfNeeded(__DIR__ . '/../.env') // remove this line if you are using parameters instead of dotenv
@@ -196,7 +196,7 @@ SymfonyUp::createFromKernelClass(Kernel::class)
 ### `phpunit.xml`
 
 ```xml
-<phpunit bootstrap="./vendor/netpromotion/symfony-up/src/autoload.php" colors="true">
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite>
             <directory suffix="Test.php">./tests/</directory>
