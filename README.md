@@ -222,6 +222,7 @@ SymfonyUp::createFromKernelClass(Kernel::class)
     </testsuites>
     <php>
         <env name="APP_ENV" value="test" />
+        <env name="APP_DEBUG" value="0" />
     </php>
 </phpunit>
 ```
