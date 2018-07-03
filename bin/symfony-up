@@ -1,7 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$possibleAutoloads = [
+    __DIR__ . '/../../../autoload.php', // symlink
+    __DIR__ . '/../autoload.php', // copy
+    __DIR__ . '/../vendor/autoload.php', // original
+];
+
+foreach ($possibleAutoloads as $possibleAutoload) {
+    if (file_exists($possibleAutoload)) {
+        /** @noinspection PhpIncludeInspection */
+        require_once $possibleAutoload;
+        break;
+    }
+}
 
 $readme = file_get_contents(__DIR__ . '/../README.md');
 $workingDir = getcwd();
