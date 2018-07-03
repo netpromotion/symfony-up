@@ -55,11 +55,12 @@ class UpTestCaseTest extends UpTestCase
 
     public function testContainerContainsEnvVariablesFromPhpunitXml()
     {
-        $this->assertSame('From phpunit.xml file', $this->getContainer()->getParameter('TEST_VAR_XML'));
+        $this->assertSame('From phpunit.xml file', $this->getContainer()->getParameter('UP_TEST_CASE'));
     }
 
     public function testKernelContainsRoutes()
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         $response = $this->getKernel()->handle(Request::create('/some.url', 'GET'));
 
         $this->assertEquals(200, $response->getStatusCode());

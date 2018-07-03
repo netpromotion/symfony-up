@@ -1,5 +1,5 @@
 parameters:
-  env(TEST_VAR_XML): ''
-  TEST_VAR_XML: '%env(TEST_VAR_XML)%'
+  env(UP_TEST_CASE): ''
+  UP_TEST_CASE: '%env(UP_TEST_CASE)%'
 
 services:

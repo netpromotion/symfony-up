@@ -18,6 +18,7 @@ class InstallScriptTest extends \PHPUnit\Framework\TestCase
             'public/.htaccess',
             'public/index.php',
             'src/Kernel.php',
+            'tests/bootstrap.php',
             'tests/TestCase.php',
         ];
         foreach ($expectedFiles as $expectedFile) {

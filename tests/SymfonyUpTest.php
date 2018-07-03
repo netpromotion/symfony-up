@@ -79,13 +79,15 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
     {
         if ($preset) {
             $_SERVER[SymfonyUp::ENVIRONMENT] = 'test';
-            $_SERVER['TEST_VAR'] = $preset;
+            $_SERVER['SYMFONY_UP'] = $preset;
+        } else {
+            unset($_SERVER[SymfonyUp::ENVIRONMENT]);
         }
 
         SymfonyUp::createFromKernel(new SomeKernel('test', true))
             ->loadEnvironmentIfNeeded(__DIR__ . '/.env');
 
-        $this->assertSame($expected, $_SERVER['TEST_VAR']);
+        $this->assertSame($expected, $_SERVER['SYMFONY_UP']);
     }
 
     public function dataLoadsEnvironmentIfNeeded()

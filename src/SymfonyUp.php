@@ -3,6 +3,7 @@
 namespace Netpromotion\SymfonyUp;
 
 use Netpromotion\SymfonyUp\Exception\MismatchException;
+use Netpromotion\SymfonyUp\Exception\RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,7 +60,7 @@ class SymfonyUp
         return $kernel;
     }
 
-    public function loadEnvironmentIfNeeded(string $pathToEnvFile): SymfonyUp
+    public static function loadEnvironmentIfNeeded(string $pathToEnvFile)
     {
         if (!isset($_SERVER[static::ENVIRONMENT])) {
             if (!class_exists(Dotenv::class)) {
@@ -67,8 +68,6 @@ class SymfonyUp
             }
             (new Dotenv())->load($pathToEnvFile);
         }
-
-        return $this;
     }
 
     public function runWeb()

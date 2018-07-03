@@ -1,4 +1,4 @@
-<phpunit bootstrap="./vendor/autoload.php" colors="true">
+<phpunit bootstrap="./tests/bootstrap.php" colors="true">
     <testsuites>
         <testsuite>
             <directory suffix="Test.php">./tests/</directory>
@@ -11,6 +11,6 @@
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
     <php>
-        <env name="TEST_VAR_XML" value="From phpunit.xml file" />
+        <env name="UP_TEST_CASE" value="From phpunit.xml file" />
     </php>
 </phpunit>
