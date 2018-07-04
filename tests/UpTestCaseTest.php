@@ -11,11 +11,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class UpTestCaseTest extends UpTestCase
 {
-    protected static function getKernelClass()
-    {
-        return SomeKernel::class;
-    }
-
     public function testKernelIsKernel()
     {
         $this->assertInstanceOf(
