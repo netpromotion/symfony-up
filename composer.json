@@ -30,6 +30,8 @@
     },
     "suggest": {
         "symfony/dotenv": "Registers environment variables from a .env file",
+        "symfony/flex": "Composer plugin for Symfony",
+        "symfony/phpunit-bridge": "Provides utilities for PHPUnit, especially user deprecation notices management",
         "symfony/stopwatch": "Provides a way to profile code",
         "symfony/web-profiler-bundle": "Provides detailed technical information about each request execution and displays it in both the web debug toolbar and the profiler"
     },
