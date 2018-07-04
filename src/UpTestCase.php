@@ -11,14 +11,6 @@ abstract class UpTestCase extends WebTestCase
     /**
      * @inheritdoc
      */
-    protected static function getKernelClass()
-    {
-        throw new \LogicException(sprintf('Override %s method', __METHOD__));
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
