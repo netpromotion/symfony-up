@@ -42,6 +42,14 @@ framework:
     log: true
 ```
 
+### `config/packages/test/framework.yaml`
+
+```yaml
+framework:
+  # test determines whether the services are related to testing your application
+  test: true
+```
+
 ### `config/bundles.php`
 
 ```php

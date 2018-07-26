@@ -1,5 +1,5 @@
 framework:
   secret: '%env(APP_SECRET)%'
 
-  router:
-    strict_requirements: ~
+  php_errors:
+    log: true

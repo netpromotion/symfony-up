@@ -3,7 +3,6 @@
 namespace Netpromotion\SymfonyUp\Test;
 
 use Netpromotion\SymfonyUp\UpTestCase;
-use Netpromotion\SymfonyUp\Test\SomeApp\SomeKernel;
 use Netpromotion\SymfonyUp\Test\SomeBundle\Service\SomeService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +42,7 @@ class UpTestCaseTest extends UpTestCase
     public function dataContainerContainsServices()
     {
         return [
+            'service from app' => ['private_service', \stdClass::class],
             'service from bundle' => ['some_service', SomeService::class],
             'service from test env' => ['test_service', \stdClass::class],
         ];
