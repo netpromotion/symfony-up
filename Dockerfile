@@ -4,7 +4,11 @@ FROM php:7.1-cli
 RUN apt update && apt install -y \
     git \
     unzip \
+    zlib1g-dev \
 ;
+
+# Install extensions
+RUN docker-php-ext-install zip
 
 # Install composer
 RUN cd /tmp && \

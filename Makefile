@@ -16,4 +16,4 @@ composer-update:
 	make composer ARGS="update ${ARGS}"
 
 tests:
-	make .run ARGS="php vendor/bin/phpunit ${ARGS}"
+	make .run ARGS="php bin/phpunit ${ARGS}"

@@ -16,6 +16,7 @@
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
+        <env name="SHELL_VERBOSITY" value="0" />
         <!-- define your env variables for the test env below -->
         <env name="UP_TEST_CASE" value="From phpunit.xml file" />
         <server name="REMOTE_ADDR" value="127.0.0.1" />

@@ -1,4 +1,4 @@
 /.idea/
+/bin/.phpunit/
 /tests/phpunit.log
 /vendor/
-/*.lock
