@@ -2,10 +2,10 @@
 
 namespace Netpromotion\SymfonyUp\Test;
 
-use Netpromotion\SymfonyUp\Test\AnApp\AnEnvironmentService;
-use Netpromotion\SymfonyUp\Test\AnApp\APublicService;
+use Sandbox\AnApp\Service\AnEnvironmentService;
+use Sandbox\AnApp\Service\APublicService;
 use Netpromotion\SymfonyUp\UpTestCase;
-use Netpromotion\SymfonyUp\Test\ABundle\Service\ABundleService;
+use Sandbox\ABundle\Service\ABundleService;
 use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -52,7 +52,7 @@ class UpTestCaseTest extends UpTestCase
     {
         return [
             'from app' => [APublicService::class],
-            // TODO 'which is private' => [\Netpromotion\SymfonyUp\Test\AnApp\APrivateService::class],
+            // TODO 'which is private' => [\Sandbox\AnApp\Service\APrivateService::class],
             'from environment' => [AnEnvironmentService::class],
             'from bundle' => [ABundleService::class],
         ];

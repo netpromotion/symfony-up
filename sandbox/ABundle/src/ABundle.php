@@ -1,8 +1,8 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\Test\ABundle;
+namespace Sandbox\ABundle;
 
-use Netpromotion\SymfonyUp\Test\ABundle\DependencyInjection\AnExtension;
+use Sandbox\ABundle\DependencyInjection\AnExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ABundle extends Bundle

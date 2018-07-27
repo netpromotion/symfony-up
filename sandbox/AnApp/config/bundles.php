@@ -3,5 +3,5 @@
 return [
     \Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
-    \Netpromotion\SymfonyUp\Test\ABundle\ABundle::class => ['all' => true],
+    \Sandbox\ABundle\ABundle::class => ['all' => true],
 ];

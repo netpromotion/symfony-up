@@ -8,9 +8,7 @@ services:
     autoconfigure: true
     public: false
 
-  Netpromotion\SymfonyUp\Test\AnApp\:
-    resource: '../*.php'
-    exclude: '../{AKernel.php,APublicService.php}'
+  Sandbox\AnApp\Service\APrivateService:
 
-  Netpromotion\SymfonyUp\Test\AnApp\APublicService:
+  Sandbox\AnApp\Service\APublicService:
     public: true

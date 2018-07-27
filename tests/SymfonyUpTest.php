@@ -3,7 +3,7 @@
 namespace Netpromotion\SymfonyUp\Test;
 
 use Netpromotion\SymfonyUp\SymfonyUp;
-use Netpromotion\SymfonyUp\Test\AnApp\AKernel;
+use Sandbox\AnApp\AKernel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;

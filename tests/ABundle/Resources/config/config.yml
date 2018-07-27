@@ -1,3 +1,0 @@
-services:
-  Netpromotion\SymfonyUp\Test\ABundle\Service\ABundleService:
-    public: true

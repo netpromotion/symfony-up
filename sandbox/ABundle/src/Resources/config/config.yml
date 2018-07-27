@@ -1,0 +1,3 @@
+services:
+  Sandbox\ABundle\Service\ABundleService:
+    public: true

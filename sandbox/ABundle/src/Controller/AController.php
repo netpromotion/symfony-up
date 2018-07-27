@@ -1,6 +1,6 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\Test\ABundle\Controller;
+namespace Sandbox\ABundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

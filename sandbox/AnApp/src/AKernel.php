@@ -1,6 +1,6 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\Test\AnApp;
+namespace Sandbox\AnApp;
 
 use Netpromotion\SymfonyUp\UpKernelTrait;
 use Netpromotion\SymfonyUp\UpKernel;
@@ -11,6 +11,6 @@ class AKernel extends UpKernel
 
     public function getProjectDir()
     {
-        return __DIR__;
+        return __DIR__ . '/..';
     }
 }

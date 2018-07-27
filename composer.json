@@ -48,7 +48,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Netpromotion\\SymfonyUp\\Test\\": "tests"
+            "Netpromotion\\SymfonyUp\\Test\\": "tests",
+            "Sandbox\\AnApp\\": "sandbox/AnApp/src",
+            "Sandbox\\ABundle\\": "sandbox/ABundle/src"
         }
     }
 }

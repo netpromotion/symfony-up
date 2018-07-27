@@ -1,6 +1,6 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\Test\ABundle\DependencyInjection;
+namespace Sandbox\ABundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
