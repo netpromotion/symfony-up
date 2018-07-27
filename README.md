@@ -120,15 +120,11 @@ class Kernel extends UpKernel
 
 namespace App\Test;
 
-use App\Kernel;
 use Netpromotion\SymfonyUp\UpTestCase;
 
 class TestCase extends UpTestCase
 {
-    protected static function getKernelClass()
-    {
-        return Kernel::class;
-    }
+    // Your own asserts goes here
 }
 ```
 
