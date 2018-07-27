@@ -1,0 +1,16 @@
+parameters:
+  env(UP_TEST_CASE): ''
+  UP_TEST_CASE: '%env(UP_TEST_CASE)%'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Netpromotion\SymfonyUp\Test\AnApp\:
+    resource: '../*.php'
+    exclude: '../{AKernel.php,APublicService.php}'
+
+  Netpromotion\SymfonyUp\Test\AnApp\APublicService:
+    public: true

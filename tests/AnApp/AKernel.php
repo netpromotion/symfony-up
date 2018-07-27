@@ -1,11 +1,11 @@
 <?php
 
-namespace Netpromotion\SymfonyUp\Test\SomeApp;
+namespace Netpromotion\SymfonyUp\Test\AnApp;
 
 use Netpromotion\SymfonyUp\UpKernelTrait;
 use Netpromotion\SymfonyUp\UpKernel;
 
-class SomeKernel extends UpKernel
+class AKernel extends UpKernel
 {
     use UpKernelTrait;
 

@@ -1,4 +1,0 @@
-services:
-  test_service:
-    class: stdClass
-    public: true

@@ -8,6 +8,12 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "symfony/browser-kit": {
+        "version": "v4.1.2"
+    },
+    "symfony/dom-crawler": {
+        "version": "v4.1.2"
+    },
     "symfony/flex": {
         "version": "1.0",
         "recipe": {

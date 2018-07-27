@@ -1,0 +1,3 @@
+a:
+  resource: '@ABundle/Controller'
+  type: annotation

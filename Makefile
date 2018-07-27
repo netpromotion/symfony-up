@@ -16,4 +16,4 @@ composer-update:
 	make composer ARGS="update ${ARGS}"
 
 tests:
-	make .run ARGS="php bin/phpunit ${ARGS}"
+	make .run ARGS="rm -rf tests/AnApp/var/cache && php bin/phpunit ${ARGS}"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f68d01e433d552feefe8f2806fa7d09",
+    "content-hash": "a4a2dfce12f4f57f8f40cc20cbf01de5",
     "packages": [
         {
             "name": "psr/cache",
@@ -1906,6 +1906,120 @@
             "time": "2018-05-12T09:37:42+00:00"
         },
         {
+            "name": "symfony/browser-kit",
+            "version": "v4.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/browser-kit.git",
+                "reference": "ff9ac5d5808a530b2e7f6abcf3a2412d4f9bcd62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/ff9ac5d5808a530b2e7f6abcf3a2412d4f9bcd62",
+                "reference": "ff9ac5d5808a530b2e7f6abcf3a2412d4f9bcd62",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/dom-crawler": "~3.4|~4.0"
+            },
+            "require-dev": {
+                "symfony/css-selector": "~3.4|~4.0",
+                "symfony/process": "~3.4|~4.0"
+            },
+            "suggest": {
+                "symfony/process": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\BrowserKit\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony BrowserKit Component",
+            "homepage": "https://symfony.com",
+            "time": "2018-06-04T17:31:56+00:00"
+        },
+        {
+            "name": "symfony/dom-crawler",
+            "version": "v4.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dom-crawler.git",
+                "reference": "eb501fa8aab8c8e2db790d8d0f945697769f6c41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/eb501fa8aab8c8e2db790d8d0f945697769f6c41",
+                "reference": "eb501fa8aab8c8e2db790d8d0f945697769f6c41",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "symfony/css-selector": "~3.4|~4.0"
+            },
+            "suggest": {
+                "symfony/css-selector": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\DomCrawler\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony DomCrawler Component",
+            "homepage": "https://symfony.com",
+            "time": "2018-07-05T11:54:23+00:00"
+        },
+        {
             "name": "symfony/dotenv",
             "version": "v4.1.2",
             "source": {
@@ -1964,16 +2078,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.85",
+            "version": "v1.0.86",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "48bf0eddadb004f95f6875b533ff1fb234bfc3f4"
+                "reference": "a7cede75f0abbac1c2859cf22352a8c79a77028c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/48bf0eddadb004f95f6875b533ff1fb234bfc3f4",
-                "reference": "48bf0eddadb004f95f6875b533ff1fb234bfc3f4",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/a7cede75f0abbac1c2859cf22352a8c79a77028c",
+                "reference": "a7cede75f0abbac1c2859cf22352a8c79a77028c",
                 "shasum": ""
             },
             "require": {
@@ -2007,7 +2121,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2018-07-25T09:16:52+00:00"
+            "time": "2018-07-26T17:33:48+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",

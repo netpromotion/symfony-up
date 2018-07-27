@@ -27,7 +27,8 @@
         "symfony/dotenv": "*",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/flex": "^1.0",
-        "symfony/phpunit-bridge": "^4.1"
+        "symfony/phpunit-bridge": "^4.1",
+        "symfony/browser-kit": "^4.1"
     },
     "suggest": {
         "symfony/dotenv": "Registers environment variables from a .env file",

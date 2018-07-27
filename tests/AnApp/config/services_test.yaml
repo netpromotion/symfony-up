@@ -1,0 +1,3 @@
+services:
+  Netpromotion\SymfonyUp\Test\AnApp\AnEnvironmentService:
+    public: true

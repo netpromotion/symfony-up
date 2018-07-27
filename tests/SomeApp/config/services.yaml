@@ -1,8 +1,0 @@
-parameters:
-  env(UP_TEST_CASE): ''
-  UP_TEST_CASE: '%env(UP_TEST_CASE)%'
-
-services:
-  private_service:
-    class: stdClass
-    public: true # TODO false

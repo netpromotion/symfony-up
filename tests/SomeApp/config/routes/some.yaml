@@ -1,3 +1,0 @@
-some:
-  resource: '@SomeBundle/Controller'
-  type: annotation

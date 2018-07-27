@@ -2,10 +2,12 @@
 
 namespace Netpromotion\SymfonyUp\Test;
 
+use Netpromotion\SymfonyUp\Test\AnApp\AnEnvironmentService;
+use Netpromotion\SymfonyUp\Test\AnApp\APublicService;
 use Netpromotion\SymfonyUp\UpTestCase;
-use Netpromotion\SymfonyUp\Test\SomeBundle\Service\SomeService;
+use Netpromotion\SymfonyUp\Test\ABundle\Service\ABundleService;
+use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class UpTestCaseTest extends UpTestCase
@@ -26,25 +28,33 @@ class UpTestCaseTest extends UpTestCase
         );
     }
 
-    /**
-     * @dataProvider dataContainerContainsServices
-     * @param string $id
-     * @param string $expected
-     */
-    public function testContainerContainsServices($id, $expected)
+    public function testContainerIsTestContainer()
     {
         $this->assertInstanceOf(
-            $expected,
-            $this->getContainer()->get($id)
+            TestContainer::class,
+            $this->getContainer()
         );
     }
 
-    public function dataContainerContainsServices()
+    /**
+     * @dataProvider dataContainerContainsService
+     * @param string $service
+     */
+    public function testContainerContainsService(string $service)
+    {
+        $this->assertInstanceOf(
+            $service,
+            $this->getContainer()->get($service)
+        );
+    }
+
+    public function dataContainerContainsService()
     {
         return [
-            'service from app' => ['private_service', \stdClass::class],
-            'service from bundle' => ['some_service', SomeService::class],
-            'service from test env' => ['test_service', \stdClass::class],
+            'from app' => [APublicService::class],
+            // TODO 'which is private' => [\Netpromotion\SymfonyUp\Test\AnApp\APrivateService::class],
+            'from environment' => [AnEnvironmentService::class],
+            'from bundle' => [ABundleService::class],
         ];
     }
 
@@ -55,10 +65,8 @@ class UpTestCaseTest extends UpTestCase
 
     public function testKernelContainsRoutes()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $response = $this->getKernel()->handle(Request::create('/some.url', 'GET'));
+        $crawler = $this->createClient()->request('GET', '/a.url');
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Some response', $response->getContent());
+        $this->assertEquals('A response', $crawler->text());
     }
 }

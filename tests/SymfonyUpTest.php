@@ -3,7 +3,8 @@
 namespace Netpromotion\SymfonyUp\Test;
 
 use Netpromotion\SymfonyUp\SymfonyUp;
-use Netpromotion\SymfonyUp\Test\SomeApp\SomeKernel;
+use Netpromotion\SymfonyUp\Test\AnApp\AKernel;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * @runTestsInSeparateProcesses otherwise the error handler will be changed
  */
-class SymfonyUpTest extends \PHPUnit\Framework\TestCase
+class SymfonyUpTest extends TestCase
 {
     /**
      * @dataProvider dataCreateFromWorks
@@ -30,7 +31,7 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
         return [
             'kernel factory' => ['createFromKernelFactory', [$this, __FUNCTION__]],
             'kernel class' => ['createFromKernelClass', __CLASS__],
-            'kernel' => ['createFromKernel', new SomeKernel('dev', true)],
+            'kernel' => ['createFromKernel', new AKernel('dev', true)],
         ];
     }
 
@@ -53,7 +54,7 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
 
                 $factoryCalled = true;
 
-                return new SomeKernel($environment, $debug);
+                return new AKernel($environment, $debug);
             })->runWeb();
         } catch (NotFoundHttpException $ignored) {
             // There is no route for /
@@ -84,7 +85,7 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
             unset($_SERVER[SymfonyUp::ENVIRONMENT]);
         }
 
-        SymfonyUp::createFromKernel(new SomeKernel('test', true))
+        SymfonyUp::createFromKernel(new AKernel('test', true))
             ->loadEnvironmentIfNeeded(__DIR__ . '/.env');
 
         $this->assertSame($expected, $_SERVER['SYMFONY_UP']);
@@ -113,7 +114,7 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
         $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
         $_SERVER[SymfonyUp::DEBUG] = $debug;
 
-        SymfonyUp::createFromKernelClass(SomeKernel::class)->runWeb();
+        SymfonyUp::createFromKernelClass(AKernel::class)->runWeb();
 
         if ($debug) {
             $this->assertSame(Response::HTTP_NOT_FOUND, http_response_code()); // There is no route for /
@@ -145,7 +146,7 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
 
         $output = new BufferedOutput();
 
-        SymfonyUp::createFromKernelClass(SomeKernel::class)->runConsole($input, $output, false);
+        SymfonyUp::createFromKernelClass(AKernel::class)->runConsole($input, $output, false);
 
         $this->assertStringMatchesFormat(
             '%aEnvironment%w' . $environment . '%aDebug%w' . var_export($debug, true) . '%a',
@@ -195,10 +196,10 @@ class SymfonyUpTest extends \PHPUnit\Framework\TestCase
     public function dataCheckKernelWorks()
     {
         return [
-            [new SomeKernel('dev', true), 'dev', true, Response::HTTP_NOT_FOUND],
-            [new SomeKernel('dev', true), 'dev', false, 'The debug is true, expected false'],
-            [new SomeKernel('dev', true), 'prod', true, 'The environment is ' . var_export("dev", true) . ', expected ' . var_export("prod", true) . ''],
-            [new SomeKernel('dev', true), 'prod', false, 'The environment is ' . var_export("dev", true) . ', expected ' . var_export("prod", true) . ''],
+            [new AKernel('dev', true), 'dev', true, Response::HTTP_NOT_FOUND],
+            [new AKernel('dev', true), 'dev', false, 'The debug is true, expected false'],
+            [new AKernel('dev', true), 'prod', true, 'The environment is ' . var_export("dev", true) . ', expected ' . var_export("prod", true) . ''],
+            [new AKernel('dev', true), 'prod', false, 'The environment is ' . var_export("dev", true) . ', expected ' . var_export("prod", true) . ''],
         ];
     }
 }
