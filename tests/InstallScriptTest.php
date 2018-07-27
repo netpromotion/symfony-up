@@ -8,7 +8,13 @@ class InstallScriptTest extends \PHPUnit\Framework\TestCase
 
     public function testInstallScriptCreatesAllFiles()
     {
-        passthru('cd ' . static::NEW_APP_DIR . ' && rm -rf ' . static::NEW_APP_DIR . '/* && echo "yes" | ../../bin/symfony-up');
+        passthru(''.
+            'mv ' . static::NEW_APP_DIR . '/.gitignore ' . static::NEW_APP_DIR . '/../.gitignore.tmp &&' .
+            'rm -rf ' . static::NEW_APP_DIR . ' &&' .
+            'mkdir ' . static::NEW_APP_DIR . ' &&' .
+            'mv ' . static::NEW_APP_DIR . '/../.gitignore.tmp ' . static::NEW_APP_DIR . '/.gitignore &&' .
+            'cd ' . static::NEW_APP_DIR . ' &&' .
+            'echo "yes" | ../../bin/symfony-up');
 
         $expectedFiles = [
             '.env.dist',
