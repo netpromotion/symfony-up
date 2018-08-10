@@ -45,6 +45,7 @@ class SymfonyUpTest extends TestCase
     {
         $factoryCalled = false;
         try {
+            ob_start();
             $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
             $_SERVER[SymfonyUp::DEBUG] = $debug;
 
@@ -58,6 +59,8 @@ class SymfonyUpTest extends TestCase
             })->runWeb();
         } catch (NotFoundHttpException $ignored) {
             // There is no route for /
+        } finally {
+            ob_end_clean();
         }
         $this->assertTrue($factoryCalled);
     }
@@ -114,7 +117,14 @@ class SymfonyUpTest extends TestCase
         $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
         $_SERVER[SymfonyUp::DEBUG] = $debug;
 
-        SymfonyUp::createFromKernelClass(AKernel::class)->runWeb();
+        try {
+            ob_start();
+            SymfonyUp::createFromKernelClass(AKernel::class)->runWeb();
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            ob_end_clean();
+        }
 
         if ($debug) {
             $this->assertSame(Response::HTTP_NOT_FOUND, http_response_code()); // There is no route for /
@@ -174,6 +184,7 @@ class SymfonyUpTest extends TestCase
     public function testCheckKernelWorks($kernel, $environment, $debug, $expectedExceptionOrStatusCode)
     {
         try {
+            ob_start();
             $_SERVER[SymfonyUp::ENVIRONMENT] = $environment;
             $_SERVER[SymfonyUp::DEBUG] = $debug;
 
@@ -190,6 +201,8 @@ class SymfonyUpTest extends TestCase
             } else {
                 $this->assertContains($expectedExceptionOrStatusCode, $e->getMessage());
             }
+        } finally {
+            ob_end_clean();
         }
     }
 
