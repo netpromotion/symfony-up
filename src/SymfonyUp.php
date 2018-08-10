@@ -13,6 +13,7 @@ use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class SymfonyUp
@@ -70,7 +71,10 @@ class SymfonyUp
         }
     }
 
-    public function runWeb()
+    /**
+     * @param callable|null $finishRequest Will be called: $finishRequest($request, $response, $kernel)
+     */
+    public function runWeb(callable $finishRequest = null)
     {
         $environment = $_SERVER[static::ENVIRONMENT] ?? 'dev';
         $debug = (bool) ($_SERVER[static::DEBUG] ?? ('prod' !== $environment));
@@ -95,8 +99,12 @@ class SymfonyUp
         $request = Request::createFromGlobals();
         /** @noinspection PhpUnhandledExceptionInspection */
         $response = $kernel->handle($request);
-        $response->send();
-        $kernel->terminate($request, $response);
+        if ($finishRequest) {
+            $finishRequest($request, $response, $kernel);
+        } else {
+            $response->send();
+            $kernel->terminate($request, $response);
+        }
     }
 
     public function runConsole(InputInterface $input = null, OutputInterface $output = null, $autoExit = true): int

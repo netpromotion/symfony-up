@@ -7,6 +7,7 @@ use Sandbox\AnApp\AKernel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -138,6 +139,19 @@ class SymfonyUpTest extends TestCase
             ['dev', false],
             ['prod', false],
         ];
+    }
+
+    public function testRunWebPassesCorrectArgsToFinishCallback()
+    {
+        $called = false;
+        SymfonyUp::createFromKernelClass(AKernel::class)->runWeb(
+            function (Request $request, Response $response, KernelInterface $kernel) use (&$called)
+            {
+                $called = true;
+                $this->assertSame(3, func_num_args());
+            }
+        );
+        $this->assertTrue($called);
     }
 
     /**
